@@ -202,6 +202,13 @@
     font-size: 13px; font-weight: 600; color: #8a98a5;
   }
   .txn-foot span { display: flex; align-items: center; gap: 6px; }
+  .txn-copy {
+    margin-left: auto; font: inherit; font-size: 13px; font-weight: 700;
+    color: var(--vm-blue-deep); background: #eaf4ff; border: none;
+    border-radius: 8px; padding: 6px 12px; cursor: pointer;
+    transition: background .15s;
+  }
+  .txn-copy:hover { background: #d9ecff; }
 
   /* ---- countdown ---- */
   .countdown {
@@ -215,6 +222,25 @@
     text-transform: uppercase; color: rgba(255,255,255,.8);
   }
   .cd-flag { font-size: 16px; }
+  .cd-right { display: flex; align-items: center; gap: 10px; }
+  .cd-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 800; letter-spacing: .08em;
+    text-transform: uppercase; padding: 5px 10px; border-radius: 999px;
+    background: rgba(255,255,255,.2); color: #fff; white-space: nowrap;
+  }
+  .cd-badge::before {
+    content: ""; width: 7px; height: 7px; border-radius: 50%;
+    background: #fff; flex: none;
+  }
+  .cd-badge.work {
+    background: #ffd23f; color: #5a4a00;
+    animation: badgePulse 1.6s ease-in-out infinite;
+  }
+  .cd-badge.work::before { background: #5a4a00; }
+  .cd-badge.off { background: rgba(255,255,255,.18); color: rgba(255,255,255,.85); }
+  .cd-badge.off::before { background: rgba(255,255,255,.7); }
+  @keyframes badgePulse { 0%,100% { opacity: 1; } 50% { opacity: .72; } }
   .cd-match { font-size: 21px; font-weight: 800; letter-spacing: -.01em; margin-top: 8px; }
   .cd-when { font-size: 13px; font-weight: 600; color: rgba(255,255,255,.82); margin-top: 2px; }
   .cd-clock { display: flex; gap: 10px; margin-top: 14px; }
@@ -288,7 +314,10 @@
   <div class="countdown" id="countdown">
     <div class="cd-top">
       <span class="cd-label" id="cdLabel">Next kickoff</span>
-      <span class="cd-flag" id="cdFlag"></span>
+      <span class="cd-right">
+        <span class="cd-badge" id="cdBadge"></span>
+        <span class="cd-flag" id="cdFlag"></span>
+      </span>
     </div>
     <div class="cd-match" id="cdMatch">—</div>
     <div class="cd-when" id="cdWhen">—</div>
@@ -307,7 +336,7 @@
 
     <div class="chips" id="chips"></div>
 
-    <button class="btn" id="go">Disguse my excuse</button>
+    <button class="btn" id="go">Disguise my excuse</button>
   </div>
 
   <div id="error"></div>
@@ -352,6 +381,7 @@
         <div class="txn-foot">
           <span>♡ Like</span>
           <span>💬 Comment</span>
+          <button class="txn-copy" id="copyTxn">Copy memo</button>
         </div>
       </div>
     </div>
@@ -385,6 +415,13 @@
     navigator.clipboard.writeText($("excuseText").textContent).then(() => {
       $("copyExcuse").textContent = "Copied";
       setTimeout(() => ($("copyExcuse").textContent = "Copy"), 1400);
+    });
+  };
+
+  $("copyTxn").onclick = () => {
+    navigator.clipboard.writeText($("emoji").textContent).then(() => {
+      $("copyTxn").textContent = "Copied";
+      setTimeout(() => ($("copyTxn").textContent = "Copy memo"), 1400);
     });
   };
 
@@ -508,7 +545,7 @@
       });
 
       btn.disabled = false;
-      btn.textContent = "Translate to corporate";
+      btn.textContent = "Disguise my excuse";
     }, 480);
   }
 
@@ -552,8 +589,10 @@
     }
 
     const el = $("countdown");
+    const badge = $("cdBadge");
     if (!next) {
       el.classList.remove("live");
+      badge.className = "cd-badge"; badge.textContent = ""; badge.style.display = "none";
       $("cdLabel").textContent = "Final whistle";
       $("cdFlag").textContent = "🏆";
       $("cdMatch").textContent = "The World Cup is over.";
@@ -567,11 +606,19 @@
     $("cdFlag").textContent = f.flag;
     $("cdMatch").textContent = f.a + " v. " + f.b;
 
+    // work-hours flag
+    const work = isWorkHours(live ? new Date() : k);
+    badge.style.display = "inline-flex";
+    badge.className = "cd-badge " + (work ? "work" : "off");
+    badge.textContent = work ? "During work hours" : "After hours";
+
     if (live) {
       el.classList.add("live");
       $("cdLabel").textContent = "Kicking off now";
       $("cdWhen").textContent = "Match in progress";
-      $("cdNote").textContent = "You should already be gone. Why are you reading this?";
+      $("cdNote").textContent = work
+        ? "It's a workday kickoff and it's happening now. You should already be gone."
+        : "It's after hours — go watch, you've earned it.";
       return;
     }
 
@@ -590,9 +637,9 @@
     $("cdM").textContent = pad(m);
     $("cdS").textContent = pad(s);
 
-    $("cdNote").textContent = isWorkHours(k)
-      ? "Conveniently scheduled during work hours. Start drafting."
-      : "Off the clock — but rehearsing never hurts.";
+    $("cdNote").textContent = work
+      ? "This one kicks off during work hours. Better start drafting."
+      : "This one's after hours — watch guilt-free. Drafting optional.";
   }
 
   tickCountdown();
