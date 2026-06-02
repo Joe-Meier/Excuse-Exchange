@@ -136,21 +136,17 @@
   @keyframes spin { to { transform: rotate(360deg); } }
 
   /* ---- output ---- */
-  #output { margin-top: 22px; }
   .hidden { display: none !important; }
 
-  .tabs {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
-    background: #eef3f7; border-radius: 12px; padding: 5px; margin-bottom: 16px;
+  #output { margin-top: 22px; display: grid; gap: 18px; }
+  @media (min-width: 700px) {
+    #output { grid-template-columns: 1fr 1fr; align-items: start; }
   }
-  .tab {
-    font: inherit; font-size: 13px; font-weight: 700;
-    color: var(--vm-slate); background: transparent;
-    border: none; border-radius: 8px; padding: 10px; cursor: pointer;
-    transition: background .15s, color .15s;
+  .out-block { min-width: 0; }
+  .out-label {
+    font-size: 12px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--vm-slate); margin-bottom: 10px;
   }
-  .tab.active { background: #fff; color: var(--vm-ink);
-    box-shadow: 0 1px 3px rgba(10,31,51,.08); }
 
   /* written excuse */
   .excuse-card {
@@ -279,14 +275,14 @@
 
 <div class="wrap">
   <header>
-<img src="Venmo_Logo.svg" alt="Venmo" class="site-logo" style="height:30px;width:auto;display:block;" />
+    <img src="Venmo_Logo.svg" alt="Venmo" class="site-logo" style="height:30px;width:auto;display:block;" />
     <div class="nav-pill">Out of Office</div>
   </header>
 
   <section class="hero">
     <span class="eyebrow">The Excuse Exchange</span>
-    <h1>The World Cup is during work hours.</h1>
-    <p class="sub">We can’t move the matches. We can give you a better reason for leaving.</p>
+    <h1>This year, the World Cup is in the United States, which means instead of the games taking place at night…they’re in the middle of the workday.</h1>
+    <p class="sub">While we can’t move the matches, we <i>can</i> give you a pretty good reason to leave</p>
   </section>
 
   <div class="countdown" id="countdown">
@@ -307,22 +303,18 @@
 
   <div class="panel">
     <div class="label">Your actual reason</div>
-    <textarea id="input" placeholder="Be honest. e.g. I want to leave at 2 to watch the game and drink a beer."></textarea>
+    <textarea id="input" placeholder="Be honest. e.g. I want to leave at 2 to watch the game and drink a beer with Kevin."></textarea>
 
     <div class="chips" id="chips"></div>
 
-    <button class="btn" id="go">Translate to corporate</button>
+    <button class="btn" id="go">Disguse my excuse</button>
   </div>
 
   <div id="error"></div>
 
   <div id="output" class="hidden">
-    <div class="tabs">
-      <button class="tab active" data-tab="written">Written excuse</button>
-      <button class="tab" data-tab="txn">Transaction</button>
-    </div>
-
-    <div id="pane-written">
+    <div class="out-block">
+      <div class="out-label">Written excuse</div>
       <div class="excuse-card">
         <div class="excuse-meta">Acceptable reason to leave early</div>
         <div class="excuse-text" id="excuseText"></div>
@@ -346,7 +338,8 @@
       </div>
     </div>
 
-    <div id="pane-txn" class="hidden">
+    <div class="out-block">
+      <div class="out-label">Transaction</div>
       <div class="txn">
         <div class="txn-head">
           <div class="avatar" id="avatar">Y</div>
@@ -366,7 +359,7 @@
 
   <footer>
     A <b>Venmo</b> public service. Excuses are fictional.<br/>
-    Venmo is not responsible for suspicious managers.
+    Venmo is not responsible for unused PTO, suspicious managers, or extra time.
   </footer>
 </div>
 
@@ -386,17 +379,6 @@
     b.textContent = ex;
     b.onclick = () => { $("input").value = ex; $("input").focus(); };
     chipBox.appendChild(b);
-  });
-
-  // tab switching
-  document.querySelectorAll(".tab").forEach((t) => {
-    t.onclick = () => {
-      document.querySelectorAll(".tab").forEach((x) => x.classList.remove("active"));
-      t.classList.add("active");
-      const tab = t.dataset.tab;
-      $("pane-written").classList.toggle("hidden", tab !== "written");
-      $("pane-txn").classList.toggle("hidden", tab !== "txn");
-    };
   });
 
   $("copyExcuse").onclick = () => {
