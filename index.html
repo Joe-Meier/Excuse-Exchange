@@ -33,22 +33,28 @@
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
     padding: 0 0 70px;
+    transition: background .4s ease;
+    overflow-x: hidden;
   }
 
   /* ---- top kickoff ticker ---- */
   .ticker {
     position: sticky; top: 0; z-index: 50; width: 100%;
-    background: var(--vm-blue); color: #fff;
-    box-shadow: 0 2px 16px -6px rgba(0,116,222,.7);
+    background: #0a1f33; color: #fff;
+    box-shadow: 0 2px 16px -6px rgba(0,0,0,.4);
   }
   .ticker.live { background: #c0271a; }
   .ticker-inner {
-    max-width: 760px; margin: 0 auto;
+    max-width: 960px; margin: 0 auto;
     display: flex; align-items: center; gap: 10px;
-    padding: 9px 20px; font-size: 13px; font-weight: 700;
+    padding: 9px 28px; font-size: 13px; font-weight: 700;
     white-space: nowrap; overflow-x: auto; scrollbar-width: none;
   }
   .ticker-inner::-webkit-scrollbar { display: none; }
+  .ticker-logo {
+    height: 18px; width: auto; flex: none; margin-right: 4px;
+    filter: brightness(0) invert(1);
+  }
   .ticker-tag {
     display: inline-flex; align-items: center; gap: 6px;
     font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
@@ -74,11 +80,16 @@
   }
   .ticker-badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .8; }
   .ticker-badge.work { background: #ffd23f; color: #5a4a00; }
+  .ticker-badge.work::before {
+    background: #e8201a; opacity: 1;
+    animation: dotBlink 1s steps(1, end) infinite;
+  }
+  @keyframes dotBlink { 50% { opacity: 0; } }
   .ticker-badge.off { background: rgba(255,255,255,.2); color: #fff; }
 
   .wrap { max-width: 560px; margin: 0 auto; padding: 28px 20px 0; }
   @media (min-width: 700px) {
-    .wrap { max-width: 760px; padding-top: 40px; }
+    .wrap { max-width: 960px; padding: 40px 28px 0; }
   }
 
   /* ---- header ---- */
@@ -105,18 +116,18 @@
   /* ---- hero ---- */
   .hero { margin-bottom: 26px; }
   .title {
-    font-size: clamp(44px, 10vw, 80px);
-    font-weight: 800; line-height: .94; letter-spacing: -.035em;
-    color: var(--vm-ink); margin-bottom: 18px;
+    font-size: clamp(52px, 11.5vw, 104px);
+    font-weight: 800; line-height: .92; letter-spacing: -.04em;
+    color: var(--vm-ink); margin-bottom: 22px;
   }
   .lede {
     font-size: clamp(19px, 2.6vw, 25px); line-height: 1.22;
     font-weight: 700; letter-spacing: -.01em; color: var(--vm-ink);
-    margin-bottom: 12px; max-width: 24ch;
+    margin-bottom: 12px;
   }
   .sub {
     font-size: 16px; line-height: 1.45; color: var(--vm-slate);
-    max-width: 80ch; font-weight: 500;
+    font-weight: 500;
   }
 
   /* ---- input card ---- */
@@ -133,10 +144,124 @@
     margin-bottom: 10px;
   }
   .how {
-    font-size: 14px; line-height: 1.5; font-weight: 500;
-    color: var(--vm-slate); margin-bottom: 18px;
-    padding-bottom: 16px; border-bottom: 1px solid var(--vm-line);
+    font-size: 15px; line-height: 1.5; font-weight: 600;
+    color: var(--vm-slate); margin-bottom: 14px;
   }
+
+  /* ---- full-screen conversational flow ---- */
+  .flow { width: 100%; min-height: 70vh; display: flex; align-items: center; }
+  .flow-stage { width: 100%; }
+  .screen { animation: screenIn .4s ease both; text-align: center; max-width: 760px; margin: 0 auto; padding: 0 24px; }
+  @keyframes screenIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+  .screen .lede { max-width: none; margin-left: auto; margin-right: auto; }
+  .screen .sub { max-width: 52ch; margin: 0 auto 36px; }
+  .slide-logo { height: 40px; width: auto; display: block; margin: 0 auto 30px; }
+
+  .q-eyebrow {
+    font-size: 13px; font-weight: 700; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--vm-blue); margin-bottom: 22px;
+  }
+  .q-text {
+    display: block;
+    font-size: clamp(36px, 6.6vw, 64px); font-weight: 800;
+    line-height: 1.04; letter-spacing: -.03em; color: var(--vm-ink);
+    margin: 0 auto 36px; max-width: 17ch;
+  }
+  .q-input {
+    width: 100%; font: inherit; text-align: center;
+    font-size: clamp(30px, 5.4vw, 50px); font-weight: 600;
+    color: var(--vm-ink); background: transparent;
+    border: none; border-bottom: 2px solid rgba(10,31,51,.14);
+    padding: 12px 0; caret-color: var(--vm-blue);
+    transition: border-color .2s;
+  }
+  .q-input:focus { outline: none; border-bottom-color: var(--vm-blue); }
+  .q-input::placeholder { color: #b7c4d0; font-weight: 500; }
+
+  .q-actions { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 40px; }
+  .go-btn {
+    font: inherit; font-size: 16px; font-weight: 700; color: #fff;
+    background: var(--vm-blue); border: none; border-radius: 11px;
+    padding: 13px 22px; cursor: pointer; transition: background .15s, transform .1s;
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .go-btn.big { font-size: 21px; padding: 19px 36px; border-radius: 14px; gap: 14px; }
+  .go-btn:hover { background: var(--vm-blue-deep); }
+  .go-btn:active { transform: scale(.98); }
+  .enter-hint { font-size: 12px; font-weight: 600; opacity: .7; }
+  .go-btn.big .enter-hint { font-size: 14px; }
+  .back-link {
+    font: inherit; font-size: 14px; font-weight: 600; color: var(--vm-slate);
+    background: none; border: none; cursor: pointer; padding: 6px;
+  }
+  .back-link:hover { color: var(--vm-ink); }
+
+  /* ---- blue background while answering questions ---- */
+  body.asking { background: var(--vm-blue); color: #fff; }
+  body.asking .q-eyebrow { color: rgba(255,255,255,.85); }
+  body.asking .q-text { color: #fff; }
+  body.asking .q-input {
+    color: #fff; caret-color: #fff;
+    border-bottom-color: rgba(255,255,255,.4);
+  }
+  body.asking .q-input:focus { border-bottom-color: #fff; }
+  body.asking .q-input::placeholder { color: rgba(255,255,255,.6); }
+  body.asking .go-btn { background: #fff; color: var(--vm-blue-deep); }
+  body.asking .go-btn:hover { background: #eaf4ff; }
+  body.asking .back-link { color: rgba(255,255,255,.8); }
+  body.asking .back-link:hover { color: #fff; }
+  body.asking .title, body.asking .lede, body.asking .sub { color: #fff; }
+
+  /* ---- intro hero (landing) ---- */
+  .screen.intro {
+    max-width: none; text-align: left; position: relative;
+    display: grid; grid-template-columns: minmax(0, 560px) 1fr;
+    align-items: center; gap: 20px;
+    padding: 0 clamp(24px, 6vw, 96px);
+  }
+  .intro-copy { min-width: 0; position: relative; z-index: 2; }
+  .intro .title {
+    font-size: clamp(40px, 6vw, 64px);
+    text-transform: uppercase; line-height: .92; letter-spacing: -.03em;
+    margin-bottom: 24px;
+  }
+  .title-logo {
+    height: .72em; width: auto; vertical-align: baseline;
+    filter: brightness(0) invert(1); margin-left: .14em;
+    position: relative; top: .05em;
+  }
+  .intro .lede, .intro .sub { text-align: left; margin-left: 0; margin-right: 0; max-width: none; }
+  .intro .lede { margin-bottom: 18px; }
+  .intro .sub { margin-bottom: 32px; }
+  .intro .q-actions { justify-content: flex-start; margin-top: 0; }
+  .intro .go-btn { background: #0a1f33; color: #fff; box-shadow: 0 16px 36px -12px rgba(0,0,0,.5); }
+  .intro .go-btn:hover { background: #13294a; }
+
+  .ball {
+    position: absolute; right: -4%; top: 50%; transform: translateY(-50%);
+    height: 75vh; width: auto; z-index: 1; pointer-events: none;
+    filter: drop-shadow(0 24px 44px rgba(0,0,0,.28));
+  }
+
+  @media (max-width: 1024px) {
+    .screen.intro { grid-template-columns: 1fr; padding: 0 24px; }
+    .ball { display: none; }
+  }
+
+  .result-intro {
+    grid-column: 1 / -1; text-align: center;
+    font-size: clamp(20px, 3vw, 26px); font-weight: 800;
+    letter-spacing: -.02em; color: var(--vm-ink); margin-bottom: 2px;
+  }
+  .restart {
+    grid-column: 1 / -1; justify-self: center;
+    font: inherit; font-size: 14px; font-weight: 700;
+    color: var(--vm-blue-deep); background: #eaf4ff; border: none;
+    border-radius: 10px; padding: 11px 18px; cursor: pointer; transition: background .15s;
+  }
+  .restart:hover { background: #d9ecff; }
+
   textarea {
     width: 100%; min-height: 88px; resize: vertical;
     border: 1.5px solid var(--vm-line); border-radius: 12px;
@@ -355,31 +480,13 @@
   </div>
 </div>
 
+<div class="flow" id="flow">
+  <div class="flow-stage" id="flowStage"></div>
+</div>
+
 <div class="wrap">
-  <header>
-    <img src="Venmo_Logo.svg" alt="Venmo" class="site-logo" style="height:30px;width:auto;display:block;" />
-    <div class="nav-pill">Out of Office</div>
-  </header>
-
-  <section class="hero">
-    <h1 class="title">The Excuse Exchange</h1>
-    <p class="lede">The World Cup is in North America this year. So the matches aren’t at night — they’re right in the middle of your workday.</p>
-    <p class="sub">And while we can’t move the matches, we <i>can</i> give you a pretty good reason to leave.</p>
-  </section>
-
-  <div class="panel">
-    <p class="how">Tell us the real reason you’re sneaking out. We’ll turn it into an excuse you can actually send your boss + a verified Venmo receipt.</p>
-    <div class="label">Your actual reason</div>
-    <textarea id="input" placeholder="Be honest. e.g. I want to leave at 2 to watch the game and drink a beer with Kevin."></textarea>
-
-    <div class="chips" id="chips"></div>
-
-    <button class="btn" id="go">Disguise my excuse</button>
-  </div>
-
-  <div id="error"></div>
-
   <div id="output" class="hidden">
+    <div class="result-intro" id="resultIntro"></div>
     <div class="out-block">
       <div class="out-label">Written excuse</div>
       <div class="excuse-card">
@@ -423,6 +530,8 @@
         </div>
       </div>
     </div>
+
+    <button class="restart" id="startOver">↻ Start over</button>
   </div>
 
   <footer>
@@ -432,22 +541,7 @@
 </div>
 
 <script>
-  const EXAMPLES = [
-    "Watch the game and drink a beer",
-    "Leave at halftime, the match runs long",
-    "Group stage opener, can't miss it",
-    "Hungover, also there's a 3pm kickoff",
-  ];
-
   const $ = (id) => document.getElementById(id);
-  const chipBox = $("chips");
-  EXAMPLES.forEach((ex) => {
-    const b = document.createElement("button");
-    b.className = "chip";
-    b.textContent = ex;
-    b.onclick = () => { $("input").value = ex; $("input").focus(); };
-    chipBox.appendChild(b);
-  });
 
   $("copyExcuse").onclick = () => {
     navigator.clipboard.writeText($("excuseText").textContent).then(() => {
@@ -534,58 +628,168 @@
     return bucket.covers[i];
   }
 
-  function launder(reason) {
-    const text = " " + reason.toLowerCase() + " ";
-    let best = null, bestScore = 0;
-    for (const b of BUCKETS) {
-      let score = 0;
-      for (const kw of b.keywords) {
-        if (text.includes(kw)) score += 1;
-      }
-      if (score > 0) {
-        const weighted = score * 10 + b.priority;
-        if (weighted > bestScore) { bestScore = weighted; best = b; }
-      }
-    }
-    return pickCover(best || FALLBACK);
+  // ---- conversational form: answers drive the bucket + plausibility ----
+  const STEPS = [
+    { id: "name", q: "First — what should we call you?", placeholder: "Type your name…" },
+    { id: "occupation", q: "And what do you do all day?", placeholder: "Type your job…" },
+    { id: "reliability", q: "Do you have a reputation for reliability?", placeholder: "Type your answer…" },
+    { id: "boss", q: "How’s your relationship with your boss?", placeholder: "Type your answer…" },
+    { id: "notice", q: "How far in advance are you calling out?", placeholder: "Type your answer…" },
+    { id: "where", q: "Where are you watching the game?", placeholder: "Type your answer…" },
+    { id: "return", q: "Do you have to go back to work afterwards?", placeholder: "Type your answer…" },
+  ];
+
+  const answers = {};
+  let mode = "intro";        // "intro" | "questions"
+  let stepIndex = 0;
+  const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+
+  function renderIntro() {
+    mode = "intro";
+    document.body.classList.add("asking");
+    $("flowStage").innerHTML =
+      '<div class="screen intro">' +
+        '<div class="intro-copy">' +
+          '<h1 class="title">The Excuse Exchange by <img class="title-logo" src="Venmo_Logo.svg" alt="Venmo" /></h1>' +
+          '<p class="lede">The big tournament is in North America this year. So the matches aren’t at night — they’re right in the middle of your workday.</p>' +
+          '<p class="sub">And while we can’t move the matches, we <i>can</i> give you a pretty good reason to leave work.</p>' +
+          '<div class="q-actions">' +
+            '<button class="go-btn big" id="beginBtn">Start <span class="enter-hint">press Enter ↵</span></button>' +
+          '</div>' +
+        '</div>' +
+        '<img class="ball" src="ball.png" alt="" aria-hidden="true" />' +
+      '</div>';
+    $("beginBtn").onclick = startQuestions;
+    $("beginBtn").focus();
   }
 
-  function translate() {
-    const reason = $("input").value.trim();
-    $("error").innerHTML = "";
-    if (!reason) { $("input").focus(); return; }
+  function startQuestions() { mode = "questions"; stepIndex = 0; document.body.classList.add("asking"); renderStep(); }
 
-    const btn = $("go");
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span> Translating';
+  function renderStep() {
+    const s = STEPS[stepIndex];
+    const last = stepIndex === STEPS.length - 1;
+    const val = answers[s.id] ? ' value="' + esc(answers[s.id]) + '"' : "";
+    $("flowStage").innerHTML =
+      '<div class="screen">' +
+        '<div class="q-eyebrow">Question ' + (stepIndex + 1) + ' of ' + STEPS.length + '</div>' +
+        '<label class="q-text" for="stepInput">' + s.q + "</label>" +
+        '<input class="q-input" id="stepInput" type="text" autocomplete="off" placeholder="' + esc(s.placeholder) + '"' + val + " />" +
+        '<div class="q-actions">' +
+          '<button class="go-btn" id="okBtn">' + (last ? "Get my exit" : "OK") + ' <span class="enter-hint">press Enter ↵</span></button>' +
+          '<button class="back-link" id="backBtn">← back</button>' +
+        '</div>' +
+      "</div>";
 
-    // brief beat so the "translation" reads as a process (nice for screen capture)
-    setTimeout(() => {
-      const out = launder(reason);
-
-      $("excuseText").textContent = out.written;
-      $("payee").textContent = out.payee;
-      $("emoji").textContent = out.emoji;
-      $("avatar").textContent = (out.payee || "?").trim().charAt(0).toUpperCase();
-      $("time").textContent = nowLabel();
-
-      // plausibility audit
-      $("auditScore").textContent = out.score + "%";
-      $("auditNote").textContent = out.note;
-      $("auditReply").textContent = out.reply;
-      $("auditFill").style.width = "0%";
-
-      $("output").classList.remove("hidden");
-      $("output").scrollIntoView({ behavior: "smooth", block: "nearest" });
-      // let the bar animate from 0 after it's visible
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => { $("auditFill").style.width = out.score + "%"; });
-      });
-
-      btn.disabled = false;
-      btn.textContent = "Disguise my excuse";
-    }, 480);
+    const inp = $("stepInput");
+    inp.focus();
+    inp.oninput = () => { answers[s.id] = inp.value.trim(); };
+    inp.onkeydown = (e) => { if (e.key === "Enter") { e.preventDefault(); goNext(); } };
+    $("okBtn").onclick = goNext;
+    $("backBtn").onclick = goPrev;
   }
+
+  function goNext() {
+    const s = STEPS[stepIndex];
+    if (!answers[s.id]) { const inp = $("stepInput"); if (inp) inp.focus(); return; }
+    if (stepIndex < STEPS.length - 1) { stepIndex++; renderStep(); }
+    else { submitForm(); }
+  }
+  function goPrev() {
+    if (stepIndex === 0) { renderIntro(); return; }
+    stepIndex--; renderStep();
+  }
+
+  // ---- interpret free-text answers ----
+  const v = (s) => (s || "").toLowerCase();
+  function relRank(s) { s = v(s);
+    if (/spotless|impeccable|very|extremely|always|gold|reliable|dependable|never late|rock solid|solid|yes|of course/.test(s)) return "high";
+    if (/\bno\b|not really|nope|unreliable|flaky|flake|late|terrible|honestly no|nah|lol/.test(s)) return "low";
+    return "mid";
+  }
+  function bossRank(s) { s = v(s);
+    if (/great|good|love|tight|friend|friendly|cool|awesome|amazing|close|solid|chill|buddy|like (her|him|them)/.test(s)) return "good";
+    if (/bad|terrible|tense|rocky|hate|awful|scared|afraid|strained|cold|distant|not great|sucks|fear|micromanage|toxic/.test(s)) return "bad";
+    return "neutral";
+  }
+  function noticeRank(s) { s = v(s);
+    if (/now|last minute|right now|currently|mid|kicking off|live|immediately|asap|spur|this second|already/.test(s)) return "now";
+    if (/day|days|week|month|advance|ahead|early|planned|tomorrow|next/.test(s)) return "days";
+    return "today";
+  }
+  function whereKey(s) { s = v(s);
+    if (/bar|pub|tavern|brewery|happy hour/.test(s)) return "bar";
+    if (/friend|buddy|mate|someone|their place|his place|her place/.test(s)) return "friend";
+    if (/stadium|arena|in person|the field|the match itself|going to the game/.test(s)) return "stadium";
+    return "home"; // home, couch, apartment, desk, etc.
+  }
+  function mustReturn(s) { s = v(s);
+    if (/\bno\b|nope|nah|off\b|gone|done|free|rest of|home for the day|not going back|i'?m out/.test(s)) return false;
+    if (/\byes\b|yeah|yep|have to|gotta|back|return|after|unfortunately|sadly|of course/.test(s)) return true;
+    return false;
+  }
+
+  function bucketFor() {
+    const key = (k) => BUCKETS.find((b) => b.key === k);
+    const w = whereKey(answers.where);
+    if (w === "stadium") return key("longrun");
+    if (mustReturn(answers.return)) return key("longrun");
+    if (w === "bar" || w === "friend") return key("social");
+    return key("watch");
+  }
+  function scoreFor() {
+    let s = 84;
+    s += ({ high: 8, mid: 3, low: -7 })[relRank(answers.reliability)] || 0;
+    s += ({ good: 6, neutral: 2, bad: -8 })[bossRank(answers.boss)] || 0;
+    s += ({ days: 7, today: 1, now: -9 })[noticeRank(answers.notice)] || 0;
+    return Math.max(58, Math.min(98, s));
+  }
+  function replyFor(s) { return s >= 92 ? "✅" : s >= 82 ? "👍" : s >= 72 ? "🫡" : "👀"; }
+  function noteFor(s) {
+    if (noticeRank(answers.notice) === "now") return "Calling out mid-kickoff is bold. We did what we could.";
+    if (bossRank(answers.boss) === "bad") return "Rocky manager dynamic factored in — keep it short.";
+    if (relRank(answers.reliability) === "low") return "Your track record isn’t helping. Send and pray.";
+    if (s >= 92) return "Reliable, well-liked, planned ahead. Practically unimpeachable.";
+    return "Plausible. Don’t over-explain if they reply.";
+  }
+
+  function submitForm() {
+    const cover = pickCover(bucketFor());
+    const score = scoreFor();
+    const name = (answers.name || "you").trim();
+
+    $("resultIntro").textContent = "Nice work, " + name + ". Here’s your exit.";
+    $("excuseText").textContent = cover.written;
+    $("payee").textContent = cover.payee;
+    $("emoji").textContent = cover.emoji;
+    $("avatar").textContent = (cover.payee || "?").trim().charAt(0).toUpperCase();
+    $("time").textContent = nowLabel();
+    $("auditScore").textContent = score + "%";
+    $("auditNote").textContent = noteFor(score);
+    $("auditReply").textContent = replyFor(score);
+    $("auditFill").style.width = "0%";
+
+    $("flow").classList.add("hidden");
+    document.body.classList.remove("asking");
+    $("output").classList.remove("hidden");
+    $("output").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    requestAnimationFrame(() => requestAnimationFrame(() => { $("auditFill").style.width = score + "%"; }));
+  }
+
+  function startOver() {
+    for (const k in answers) delete answers[k];
+    $("output").classList.add("hidden");
+    $("flow").classList.remove("hidden");
+    renderIntro();
+    $("flow").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  // Enter on the intro screen begins the flow
+  document.addEventListener("keydown", (e) => {
+    if (mode === "intro" && e.key === "Enter") { e.preventDefault(); startQuestions(); }
+  });
+
+  $("startOver").onclick = startOver;
+  renderIntro();
 
   // ---- World Cup kickoff countdown (times in ET, per FIFA group-stage schedule) ----
   // Marquee + USA fixtures, weighted toward work-hours kickoffs (the whole point).
@@ -667,9 +871,4 @@
 
   tickCountdown();
   setInterval(tickCountdown, 1000);
-
-  $("go").onclick = translate;
-  $("input").addEventListener("keydown", (e) => {
-    if ((e.metaKey || e.ctrlKey) && e.key === "Enter") translate();
-  });
 </script>
