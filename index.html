@@ -239,7 +239,7 @@
   .intro .go-btn:hover { background: #13294a; }
 
   .ball {
-    position: absolute; right: -8%; top: 50%; transform: translateY(-50%);
+    position: absolute; right: -8%; top: 20%; transform: translateY(-50%);
     height: 85vh; width: auto; z-index: 1; pointer-events: none;
     filter: drop-shadow(0 24px 44px rgba(0,0,0,.28));
   }
@@ -467,18 +467,6 @@
   }
   footer b { color: var(--vm-slate); }
 </style>
-
-<div class="ticker" id="ticker">
-  <div class="ticker-inner">
-    <span class="ticker-tag"><span class="ticker-dot"></span>Next kickoff</span>
-    <span class="ticker-match" id="tMatch">—</span>
-    <span class="ticker-sep">·</span>
-    <span class="ticker-when" id="tWhen">—</span>
-    <span class="ticker-sep">·</span>
-    <span class="ticker-count" id="tCount">—</span>
-    <span class="ticker-badge" id="tBadge"></span>
-  </div>
-</div>
 
 <div class="flow" id="flow">
   <div class="flow-stage" id="flowStage"></div>
@@ -791,84 +779,4 @@
   $("startOver").onclick = startOver;
   renderIntro();
 
-  // ---- World Cup kickoff countdown (times in ET, per FIFA group-stage schedule) ----
-  // Marquee + USA fixtures, weighted toward work-hours kickoffs (the whole point).
-  // Dates are ET; the live clock converts to the viewer's own timezone automatically.
-  const FIXTURES = [
-    { a: "Mexico", b: "South Africa", flag: "🇲🇽", iso: "2026-06-11T15:00:00-04:00" },
-    { a: "USA", b: "Paraguay", flag: "🇺🇸", iso: "2026-06-12T21:00:00-04:00" },
-    { a: "Brazil", b: "Morocco", flag: "🇧🇷", iso: "2026-06-13T18:00:00-04:00" },
-    { a: "Germany", b: "Curaçao", flag: "🇩🇪", iso: "2026-06-14T13:00:00-04:00" },
-    { a: "Netherlands", b: "Japan", flag: "🇳🇱", iso: "2026-06-14T16:00:00-04:00" },
-    { a: "Spain", b: "Cape Verde", flag: "🇪🇸", iso: "2026-06-15T12:00:00-04:00" },
-    { a: "Belgium", b: "Egypt", flag: "🇧🇪", iso: "2026-06-15T15:00:00-04:00" },
-    { a: "France", b: "Senegal", flag: "🇫🇷", iso: "2026-06-16T15:00:00-04:00" },
-    { a: "Argentina", b: "Algeria", flag: "🇦🇷", iso: "2026-06-16T21:00:00-04:00" },
-    { a: "USA", b: "Australia", flag: "🇺🇸", iso: "2026-06-19T15:00:00-04:00" },
-    { a: "Türkiye", b: "USA", flag: "🇺🇸", iso: "2026-06-25T22:00:00-04:00" },
-  ];
-
-  function pad(n) { return String(n).padStart(2, "0"); }
-
-  function isWorkHours(d) {
-    const day = d.getDay();            // viewer-local
-    const h = d.getHours();
-    return day >= 1 && day <= 5 && h >= 9 && h < 18;
-  }
-
-  function fmtWhen(d) {
-    const opts = { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" };
-    return d.toLocaleString(undefined, opts) + " your time";
-  }
-
-  function tickCountdown() {
-    const now = new Date();
-    let next = null;
-    for (const f of FIXTURES) {
-      const k = new Date(f.iso);
-      const end = new Date(k.getTime() + 115 * 60000); // ~match length
-      if (now < end) { next = { f, k, live: now >= k }; break; }
-    }
-
-    const tk = $("ticker");
-    const badge = $("tBadge");
-
-    if (!next) {
-      tk.classList.remove("live");
-      $("tMatch").textContent = "World Cup over";
-      $("tWhen").textContent = "Back to work";
-      $("tCount").textContent = "—";
-      badge.className = "ticker-badge"; badge.textContent = ""; badge.style.display = "none";
-      return;
-    }
-
-    const { f, k, live } = next;
-    $("tMatch").textContent = f.flag + " " + f.a + " v. " + f.b;
-
-    const work = isWorkHours(live ? new Date() : k);
-    badge.style.display = "inline-flex";
-    badge.className = "ticker-badge " + (work ? "work" : "off");
-    badge.textContent = work ? "During work hours" : "After hours";
-
-    if (live) {
-      tk.classList.add("live");
-      $("tWhen").textContent = "Kicking off now";
-      $("tCount").textContent = "LIVE";
-      return;
-    }
-
-    tk.classList.remove("live");
-    const opts = { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" };
-    $("tWhen").textContent = k.toLocaleString(undefined, opts);
-
-    let diff = Math.max(0, k - now);
-    const d = Math.floor(diff / 86400000); diff -= d * 86400000;
-    const h = Math.floor(diff / 3600000); diff -= h * 3600000;
-    const m = Math.floor(diff / 60000); diff -= m * 60000;
-    const s = Math.floor(diff / 1000);
-    $("tCount").textContent = d + "d " + pad(h) + ":" + pad(m) + ":" + pad(s);
-  }
-
-  tickCountdown();
-  setInterval(tickCountdown, 1000);
 </script>
