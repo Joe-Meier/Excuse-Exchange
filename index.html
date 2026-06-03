@@ -38,7 +38,7 @@
     overflow-x: hidden;
   }
 
-  /* ---- top kickoff ticker ---- */
+  
   .ticker {
     position: sticky; top: 0; z-index: 50; width: 100%;
     background: #0a1f33; color: #fff;
@@ -93,7 +93,7 @@
     .wrap { max-width: 960px; padding: 40px 28px 0; }
   }
 
-  /* ---- header ---- */
+  
   header {
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 34px;
@@ -114,7 +114,7 @@
     border-radius: 999px; padding: 7px 14px;
   }
 
-  /* ---- hero ---- */
+  
   .hero { margin-bottom: 26px; }
   .title {
     font-size: clamp(52px, 11.5vw, 104px);
@@ -131,7 +131,7 @@
     font-weight: 500;
   }
 
-  /* ---- input card ---- */
+  
   .panel {
     background: var(--vm-card);
     border: 1px solid var(--vm-line);
@@ -149,7 +149,7 @@
     color: var(--vm-slate); margin-bottom: 14px;
   }
 
-  /* ---- full-screen conversational flow ---- */
+  
   .flow {
     width: 100%;
     min-height: 100vh;
@@ -212,7 +212,7 @@
   }
   .back-link:hover { color: var(--vm-ink); }
 
-  /* ---- blue background while answering questions ---- */
+  
   body.asking { background: var(--vm-blue); color: #fff; }
   body.asking .q-eyebrow { color: rgba(255,255,255,.85); }
   body.asking .q-text { color: #fff; }
@@ -232,7 +232,7 @@
 
 
 
-  /* ---- result page glow-up ---- */
+  
   body.result {
     background: var(--vm-blue);
     color: #fff;
@@ -324,7 +324,7 @@
   }
 
 
-  /* ---- intro hero (landing) ---- */
+  
   .screen.intro {
     max-width: none;
     min-height: calc(100vh - clamp(64px, 12vh, 144px));
@@ -445,7 +445,7 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ---- output ---- */
+  
   .hidden { display: none !important; }
 
   #output { margin-top: 22px; display: grid; gap: 22px; }
@@ -458,7 +458,7 @@
     text-transform: uppercase; color: var(--vm-slate); margin-bottom: 10px;
   }
 
-  /* written excuse */
+  
   .excuse-card {
     background: var(--beige);
     border: 1px solid #e6e0d2; border-radius: 20px;
@@ -482,7 +482,7 @@
   }
   .copy-btn:hover { background: #faf8f3; }
 
-  /* venmo transaction card */
+  
   .txn {
     border: 1px solid var(--vm-line); border-radius: 20px;
     overflow: hidden; background: #fff;
@@ -520,7 +520,7 @@
   }
   .txn-copy:hover { background: #d9ecff; }
 
-  /* ---- countdown ---- */
+  
   .countdown {
     background: linear-gradient(135deg, var(--vm-blue), #0a74e0);
     border-radius: 18px; padding: 18px 20px; margin-bottom: 18px;
@@ -573,7 +573,7 @@
   .countdown.live { background: linear-gradient(135deg, #e8472b, #c0271a); box-shadow: 0 18px 40px -26px rgba(192,39,26,.8); }
   .countdown.live .cd-clock { display: none; }
 
-  /* ---- plausibility audit ---- */
+  
   .audit { margin-top: 18px; padding-top: 16px; border-top: 1px solid #e6e0d2; }
   .audit-row { display: flex; align-items: center; justify-content: space-between; }
   .audit-label {
@@ -625,11 +625,11 @@
         <div class="audit">
           <div class="audit-row">
             <span class="audit-label">Plausibility</span>
-            <span class="audit-score" id="auditScore">—</span>
+            <span class="audit-score" id="auditScore">-</span>
           </div>
           <div class="audit-bar"><div class="audit-fill" id="auditFill"></div></div>
           <div class="audit-row audit-sub">
-            <span id="auditNote">—</span>
+            <span id="auditNote">-</span>
             <span class="audit-reply">Likely reply <b id="auditReply">👍</b></span>
           </div>
         </div>
@@ -647,7 +647,7 @@
         <div class="txn-head">
           <div class="avatar" id="avatar">Y</div>
           <div class="txn-line">
-            <div class="txn-people">You paid <b id="payee">—</b></div>
+            <div class="txn-people">You paid <b id="payee">-</b></div>
             <div class="txn-time"><span class="globe">🌐</span><span id="time">Today</span></div>
           </div>
         </div>
@@ -694,48 +694,47 @@
     return `Today at ${h}:${String(m).padStart(2, "0")} ${ap}`;
   }
 
-  // ---- local laundering engine: runs anywhere, no network ----
-  // Each bucket: keywords to match, priority for ties, and vetted cover stories.
-  // Cover stories NEVER name the game, beer, or being hungover.
+
+
   const BUCKETS = [
     {
-      // drinks / bar / friends  -> keep the social thread, launder the reason
+
       key: "social", priority: 5,
       keywords: ["beer","bar","drink","drinks","pub","tavern","pint","brew","friend","friends","buddy","buddies","mates","hang","catch up","day drink","happy hour"],
       covers: [
-        { written: "Stepping out a bit early — a friend of mine is having a rough stretch and asked if I could meet up for a while. I'll keep my phone on if anything's urgent.", payee: "Marcus T.", emoji: "🤝 💬 ☕️ 🚶", score: 92, reply: "🫡", note: "Emotionally unfalsifiable. Nobody pushes back on this." },
+        { written: "Stepping out a bit early - a friend of mine is having a rough stretch and asked if I could meet up for a while. I'll keep my phone on if anything's urgent.", payee: "Marcus T.", emoji: "🤝 💬 ☕️ 🚶", score: 92, reply: "🫡", note: "Emotionally unfalsifiable. Nobody pushes back on this." },
         { written: "Heading out to be there for someone close to me who's dealing with something. Back online tonight; reachable by message in the meantime.", payee: "A Friend", emoji: "🫂 💬 📱", score: 90, reply: "👍", note: "Vague and humane. The ideal combination." },
         { written: "Have to step away to help a friend with something time-sensitive this afternoon. Nothing pressing pending on my end.", payee: "Dev P.", emoji: "🆘 🤝 🚗", score: 88, reply: "👍", note: "“Time-sensitive” discourages follow-up questions." },
       ],
     },
     {
-      // uncertain end time -> the long-match launder
+
       key: "longrun", priority: 4,
       keywords: ["halftime","half time","runs long","run long","long","overtime","extra time","until","late","might run","could run","not sure how long"],
       covers: [
-        { written: "I have an appointment this afternoon that may run long — I'll be back the moment it wraps, though it's hard to say exactly when.", payee: "Dr. Lin's Office", emoji: "🩺 ⏳ 🚗", score: 95, reply: "✅", note: "No one audits a medical appointment. Airtight." },
+        { written: "I have an appointment this afternoon that may run long - I'll be back the moment it wraps, though it's hard to say exactly when.", payee: "Dr. Lin's Office", emoji: "🩺 ⏳ 🚗", score: 95, reply: "✅", note: "No one audits a medical appointment. Airtight." },
         { written: "Stepping out for something with an unpredictable end time. I'll re-join as soon as it's done and flag you when I'm back.", payee: "Appointment", emoji: "⏱️ 🤷 🚪", score: 91, reply: "👍", note: "Buys you the full 90 plus stoppage." },
-        { written: "Have a commitment on the calendar with a fuzzy finish today — could be 90 minutes, could be longer. Will keep you posted.", payee: "Standing Appt.", emoji: "🗓️ ⌛️ 📲", score: 93, reply: "✅", note: "“Could be longer” covers extra time, too." },
+        { written: "Have a commitment on the calendar with a fuzzy finish today - could be 90 minutes, could be longer. Will keep you posted.", payee: "Standing Appt.", emoji: "🗓️ ⌛️ 📲", score: 93, reply: "✅", note: "“Could be longer” covers extra time, too." },
       ],
     },
     {
-      // hungover / unwell
+
       key: "unwell", priority: 3,
       keywords: ["hungover","hangover","sick","ill","tired","exhausted","not feeling","headache","migraine","rough morning","under the weather","queasy"],
       covers: [
-        { written: "Not feeling great today — I think I need to step out and rest before it turns into something worse.", payee: "CVS Pharmacy", emoji: "🤕 💊 🛏️", score: 96, reply: "✅", note: "Nobody wants the details. They never ask." },
+        { written: "Not feeling great today - I think I need to step out and rest before it turns into something worse.", payee: "CVS Pharmacy", emoji: "🤕 💊 🛏️", score: 96, reply: "✅", note: "Nobody wants the details. They never ask." },
         { written: "Feel like I'm coming down with something. Going to head out and try to shake it before tomorrow.", payee: "Walgreens", emoji: "🤒 🧴 😴", score: 94, reply: "✅", note: "Pre-emptive sickness. Considerate, even." },
-        { written: "Bit of a migraine setting in — stepping away from the screen for the rest of the day to get ahead of it.", payee: "Dr. Patel", emoji: "💥 👁️ 🌑", score: 95, reply: "🫡", note: "Screens make it worse. Unarguable." },
+        { written: "Bit of a migraine setting in - stepping away from the screen for the rest of the day to get ahead of it.", payee: "Dr. Patel", emoji: "💥 👁️ 🌑", score: 95, reply: "🫡", note: "Screens make it worse. Unarguable." },
       ],
     },
     {
-      // watching the game / can't miss it -> prior-commitment launder
+
       key: "watch", priority: 2,
       keywords: ["game","match","watch","kickoff","kick off","world cup","soccer","futbol","football","fixture","group stage","opener","usa","argentina","brazil","england"],
       covers: [
-        { written: "Leaving a little early today — I have a personal commitment I locked in a while back that I'm not able to move.", payee: "Calendar", emoji: "📅 🔒 🚶", score: 87, reply: "👍", note: "“Locked in a while back” implies it's your fault, not theirs." },
+        { written: "Leaving a little early today - I have a personal commitment I locked in a while back that I'm not able to move.", payee: "Calendar", emoji: "📅 🔒 🚶", score: 87, reply: "👍", note: "“Locked in a while back” implies it's your fault, not theirs." },
         { written: "Stepping out this afternoon for a prior engagement that's been on the calendar. Back by EOD.", payee: "Prior Engagement", emoji: "🗓️ ✅ 🚪", score: 85, reply: "👀", note: "Solid. Don't elaborate if asked." },
-        { written: "Out for part of the afternoon for a commitment I made earlier in the quarter — flagging now so it's on your radar.", payee: "Q2 Commitment", emoji: "📌 📅 🚗", score: 89, reply: "👍", note: "Corporate enough to blend into the calendar." },
+        { written: "Out for part of the afternoon for a commitment I made earlier in the quarter - flagging now so it's on your radar.", payee: "Q2 Commitment", emoji: "📌 📅 🚗", score: 89, reply: "👍", note: "Corporate enough to blend into the calendar." },
       ],
     },
   ];
@@ -745,11 +744,10 @@
     covers: [
       { written: "Stepping out to handle a personal matter this afternoon. Back by end of day, and reachable if anything's on fire.", payee: "Personal", emoji: "🚪 🤝 ✅", score: 84, reply: "👍", note: "“Personal matter” is a closed door. Most managers respect it." },
       { written: "Have to take care of something personal today. I'll pick up anything outstanding first thing tomorrow.", payee: "Errand", emoji: "🚗 📋 🏠", score: 82, reply: "👍", note: "Boring enough to be true." },
-      { written: "Out for the rest of the day on a personal matter — nothing urgent pending on my end.", payee: "Personal Matter", emoji: "🤫 🚶 ✅", score: 83, reply: "👀", note: "Works best when sent, not asked in person." },
+      { written: "Out for the rest of the day on a personal matter - nothing urgent pending on my end.", payee: "Personal Matter", emoji: "🤫 🚶 ✅", score: 83, reply: "👀", note: "Works best when sent, not asked in person." },
     ],
   };
 
-  // rotate variants so repeated translations of the same input feel alive
   const rotation = {};
   function pickCover(bucket) {
     const i = (rotation[bucket.key] || 0) % bucket.covers.length;
@@ -757,9 +755,8 @@
     return bucket.covers[i];
   }
 
-  // ---- conversational form: answers drive the bucket + plausibility ----
   const STEPS = [
-    { id: "name", q: "First — what should we call you?", placeholder: "Type your name…" },
+    { id: "name", q: "First, what should we call you?", placeholder: "Type your name…" },
     { id: "occupation", q: "And what do you do all day?", placeholder: "Type your job…" },
     { id: "reliability", q: "Do you have a reputation for reliability?", placeholder: "Type your answer…" },
     { id: "boss", q: "How’s your relationship with your boss?", placeholder: "Type your answer…" },
@@ -800,15 +797,13 @@
     const cover = pickCover(bucket);
     const score = cover.score || 86;
 
-    $("resultIntro").textContent = "Here’s your exit.";
+    $("resultIntro").textContent = "Here's your excuse";
     $("excuseText").textContent = cover.written;
     $("payee").textContent = cover.payee;
     $("emoji").textContent = cover.emoji;
     $("avatar").textContent = (cover.payee || "?").trim().charAt(0).toUpperCase();
     $("time").textContent = nowLabel();
     $("auditScore").textContent = score + "%";
-    $("auditNote").textContent = cover.note || "Plausible. Don’t over-explain if they reply.";
-    $("auditReply").textContent = cover.reply || replyFor(score);
     $("auditFill").style.width = "0%";
 
     $("flow").classList.add("hidden");
@@ -855,7 +850,6 @@
     stepIndex--; renderStep();
   }
 
-  // ---- interpret free-text answers ----
   const v = (s) => (s || "").toLowerCase();
   function relRank(s) { s = v(s);
     if (/spotless|impeccable|very|extremely|always|gold|reliable|dependable|never late|rock solid|solid|yes|of course/.test(s)) return "high";
@@ -902,7 +896,7 @@
   function replyFor(s) { return s >= 92 ? "✅" : s >= 82 ? "👍" : s >= 72 ? "🫡" : "👀"; }
   function noteFor(s) {
     if (noticeRank(answers.notice) === "now") return "Calling out mid-kickoff is bold. We did what we could.";
-    if (bossRank(answers.boss) === "bad") return "Rocky manager dynamic factored in — keep it short.";
+    if (bossRank(answers.boss) === "bad") return "Rocky manager dynamic factored in, keep it short.";
     if (relRank(answers.reliability) === "low") return "Your track record isn’t helping. Send and pray.";
     if (s >= 92) return "Reliable, well-liked, planned ahead. Practically unimpeachable.";
     return "Plausible. Don’t over-explain if they reply.";
@@ -913,15 +907,13 @@
     const score = scoreFor();
     const name = (answers.name || "you").trim();
 
-    $("resultIntro").textContent = "Nice work, " + name + ". Here’s your exit.";
+    $("resultIntro").textContent = "Nice work, " + name + ". Here's your excuse";
     $("excuseText").textContent = cover.written;
     $("payee").textContent = cover.payee;
     $("emoji").textContent = cover.emoji;
     $("avatar").textContent = (cover.payee || "?").trim().charAt(0).toUpperCase();
     $("time").textContent = nowLabel();
     $("auditScore").textContent = score + "%";
-    $("auditNote").textContent = noteFor(score);
-    $("auditReply").textContent = replyFor(score);
     $("auditFill").style.width = "0%";
 
     $("flow").classList.add("hidden");
@@ -940,7 +932,6 @@
     $("flow").scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  // Enter is intentionally disabled on the intro choice screen.
   document.addEventListener("keydown", (e) => {
     if (mode === "intro" && e.key === "Enter") { e.preventDefault(); }
   });
