@@ -1,4 +1,5 @@
 
+
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
@@ -149,9 +150,21 @@
   }
 
   /* ---- full-screen conversational flow ---- */
-  .flow { width: 100%; min-height: 70vh; display: flex; align-items: center; }
+  .flow {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: clamp(32px, 6vh, 72px) 0;
+  }
   .flow-stage { width: 100%; }
-  .screen { animation: screenIn .4s ease both; text-align: center; max-width: 760px; margin: 0 auto; padding: 0 24px; }
+  .screen {
+    animation: screenIn .4s ease both;
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
   @keyframes screenIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 
   .screen .lede { max-width: none; margin-left: auto; margin-right: auto; }
@@ -215,16 +228,23 @@
 
   /* ---- intro hero (landing) ---- */
   .screen.intro {
-    max-width: none; text-align: left; position: relative;
-    display: grid; grid-template-columns: minmax(0, 560px) 1fr;
-    align-items: center; gap: 20px;
+    max-width: none;
+    min-height: calc(100vh - clamp(64px, 12vh, 144px));
+    text-align: left;
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 760px) 1fr;
+    align-items: center;
+    gap: 20px;
     padding: 0 clamp(24px, 6vw, 96px);
   }
   .intro-copy { min-width: 0; position: relative; z-index: 2; }
   .intro .title {
-    font-size: clamp(40px, 6vw, 64px);
-    text-transform: uppercase; line-height: .92; letter-spacing: -.03em;
-    margin-bottom: 24px;
+    font-size: clamp(62px, 8.8vw, 116px);
+    text-transform: uppercase;
+    line-height: .9;
+    letter-spacing: -.045em;
+    margin-bottom: 28px;
   }
   .title-logo {
     height: .72em; width: auto; vertical-align: baseline;
@@ -232,20 +252,43 @@
     position: relative; top: .05em;
   }
   .intro .lede, .intro .sub { text-align: left; margin-left: 0; margin-right: 0; max-width: none; }
-  .intro .lede { margin-bottom: 18px; }
-  .intro .sub { margin-bottom: 32px; }
+  .intro .lede {
+    font-size: clamp(25px, 3.2vw, 38px);
+    line-height: 1.12;
+    margin-bottom: 20px;
+  }
+  .intro .sub {
+    font-size: clamp(18px, 2vw, 24px);
+    line-height: 1.32;
+    margin-bottom: 34px;
+  }
   .intro .q-actions { justify-content: flex-start; margin-top: 0; }
   .intro .go-btn { background: #0a1f33; color: #fff; box-shadow: 0 16px 36px -12px rgba(0,0,0,.5); }
   .intro .go-btn:hover { background: #13294a; }
+
+  @keyframes ballSpin {
+    from { transform: translateY(-50%) rotate(0deg); }
+    to { transform: translateY(-50%) rotate(360deg); }
+  }
 
   .ball {
     position: absolute; right: -4%; top: 50%; transform: translateY(-50%);
     height: 75vh; width: auto; z-index: 1; pointer-events: none;
     filter: drop-shadow(0 24px 44px rgba(0,0,0,.28));
+    transform-origin: 50% 50%;
+    animation: ballSpin 32s linear infinite;
+    will-change: transform;
   }
 
   @media (max-width: 1024px) {
-    .screen.intro { grid-template-columns: 1fr; padding: 0 24px; }
+    .screen.intro {
+      grid-template-columns: 1fr;
+      min-height: calc(100vh - 64px);
+      padding: 0 24px;
+      text-align: center;
+    }
+    .intro .lede, .intro .sub { text-align: center; }
+    .intro .q-actions { justify-content: center; }
     .ball { display: none; }
   }
 
@@ -638,9 +681,8 @@
     $("flowStage").innerHTML =
       '<div class="screen intro">' +
         '<div class="intro-copy">' +
-          '<h1 class="title">The Excuse Exchange by <img class="title-logo" src="Venmo_Logo.svg" alt="Venmo" /></h1>' +
-          '<p class="lede">The big tournament is in North America this year. So the matches aren’t at night — they’re right in the middle of your workday.</p>' +
-          '<p class="sub">And while we can’t move the matches, we <i>can</i> give you a pretty good reason to leave work.</p>' +
+          '<h1 class="title">The Excuse Generator by <img class="title-logo" src="Venmo_Logo.svg" alt="Venmo" /></h1>' +
+          '<p class="lede">Trying to blow off work to watch the match? Use this cover story so your Venmo transactions don’t get you in trouble!</p>' +
           '<div class="q-actions">' +
             '<button class="go-btn big" id="beginBtn">Start <span class="enter-hint">press Enter ↵</span></button>' +
           '</div>' +
