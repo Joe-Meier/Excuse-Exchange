@@ -192,7 +192,7 @@
   .q-input:focus { outline: none; border-bottom-color: var(--vm-blue); }
   .q-input::placeholder { color: #b7c4d0; font-weight: 500; }
 
-  .q-actions { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 40px; }
+  .q-actions { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 40px; flex-wrap: wrap; }
   .go-btn {
     font: inherit; font-size: 16px; font-weight: 700; color: #fff;
     background: var(--vm-blue); border: none; border-radius: 11px;
@@ -200,6 +200,8 @@
     display: inline-flex; align-items: center; gap: 10px;
   }
   .go-btn.big { font-size: 21px; padding: 19px 36px; border-radius: 14px; gap: 14px; }
+  .go-btn.quick { background: var(--vm-blue); color: #fff; }
+  .go-btn.quick:hover { background: var(--vm-blue-deep); }
   .go-btn:hover { background: var(--vm-blue-deep); }
   .go-btn:active { transform: scale(.98); }
   .enter-hint { font-size: 12px; font-weight: 600; opacity: .7; }
@@ -222,6 +224,8 @@
   body.asking .q-input::placeholder { color: rgba(255,255,255,.6); }
   body.asking .go-btn { background: #fff; color: var(--vm-blue-deep); }
   body.asking .go-btn:hover { background: #eaf4ff; }
+  body.asking .go-btn.quick { background: #0a1f33; color: #fff; }
+  body.asking .go-btn.quick:hover { background: #13294a; }
   body.asking .back-link { color: rgba(255,255,255,.8); }
   body.asking .back-link:hover { color: #fff; }
   body.asking .title, body.asking .lede, body.asking .sub { color: #fff; }
@@ -684,13 +688,39 @@
           '<h1 class="title">The Excuse Generator by <img class="title-logo" src="Venmo_Logo.svg" alt="Venmo" /></h1>' +
           '<p class="lede">Trying to blow off work to watch the match? Use this cover story so your Venmo transactions don’t get you in trouble!</p>' +
           '<div class="q-actions">' +
-            '<button class="go-btn big" id="beginBtn">Start <span class="enter-hint">press Enter ↵</span></button>' +
+            '<button class="go-btn big" id="beginBtn">Customized Excuse</button>' +
+            '<button class="go-btn big quick" id="quickBtn">Generate Excuse</button>' +
           '</div>' +
         '</div>' +
         '<img class="ball" src="ball.png" alt="" aria-hidden="true" />' +
       '</div>';
     $("beginBtn").onclick = startQuestions;
+    $("quickBtn").onclick = generateQuickExcuse;
     $("beginBtn").focus();
+  }
+
+
+  function generateQuickExcuse() {
+    const bucket = BUCKETS.find((b) => b.key === "watch") || FALLBACK;
+    const cover = pickCover(bucket);
+    const score = cover.score || 86;
+
+    $("resultIntro").textContent = "Here’s your exit.";
+    $("excuseText").textContent = cover.written;
+    $("payee").textContent = cover.payee;
+    $("emoji").textContent = cover.emoji;
+    $("avatar").textContent = (cover.payee || "?").trim().charAt(0).toUpperCase();
+    $("time").textContent = nowLabel();
+    $("auditScore").textContent = score + "%";
+    $("auditNote").textContent = cover.note || "Plausible. Don’t over-explain if they reply.";
+    $("auditReply").textContent = cover.reply || replyFor(score);
+    $("auditFill").style.width = "0%";
+
+    $("flow").classList.add("hidden");
+    document.body.classList.remove("asking");
+    $("output").classList.remove("hidden");
+    $("output").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    requestAnimationFrame(() => requestAnimationFrame(() => { $("auditFill").style.width = score + "%"; }));
   }
 
   function startQuestions() { mode = "questions"; stepIndex = 0; document.body.classList.add("asking"); renderStep(); }
@@ -813,9 +843,9 @@
     $("flow").scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  // Enter on the intro screen begins the flow
+  // Enter is intentionally disabled on the intro choice screen.
   document.addEventListener("keydown", (e) => {
-    if (mode === "intro" && e.key === "Enter") { e.preventDefault(); startQuestions(); }
+    if (mode === "intro" && e.key === "Enter") { e.preventDefault(); }
   });
 
   $("startOver").onclick = startOver;
